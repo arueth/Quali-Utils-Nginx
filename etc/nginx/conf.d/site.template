@@ -1,0 +1,17 @@
+server {
+    listen ${NGINX_PORT};
+    server_name ${NGINX_SERVER_NAME};
+
+    error_page   500 502 503 504  /50x.html;                                                                    
+    location = /50x.html {                                                                                      
+        root   /usr/share/nginx/html;                                                                           
+    }  
+
+    location ~* /api {
+        proxy_pass http://${DJANGO_ALIAS}:${DJANGO_PORT};
+    }
+
+    location / {
+        proxy_pass http://${NODEJS_ALIAS}:${NODEJS_PORT};
+    }
+}
